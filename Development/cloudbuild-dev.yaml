@@ -1,0 +1,20 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--no-cache', '-t', 'gcr.io/$PROJECT_ID/welcome-app:latest', 'app']
+    dir: 'Development'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/welcome-app:latest']
+    dir: 'Development'
+
+  - name: 'hashicorp/terraform:1.5.7'
+    args: ['init']
+    dir: 'Development'
+
+  - name: 'hashicorp/terraform:1.5.7'
+    args: ['apply', '-auto-approve']
+    dir: 'Development'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 1200s
